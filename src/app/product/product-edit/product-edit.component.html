@@ -1,0 +1,77 @@
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            {{pageTitle}}
+        </div>
+        <form (ngSubmit)="onSubmit()" [formGroup]="editProductForm">
+            <div class="card-body">
+                <div class="form-group row mb-2">
+                    <label for="productName" class="col-md-2 mr-3">Product Name :</label>
+                    <div class="col-md-8">
+                        <input type="text" id="productName" class="form-control" [ngClass]=" displayMessage?.productName ? 'is-invalid' : ''" placeholder="Product Name"
+                            formControlName="productName" />
+                        <span class="invalid-feedback">
+                            {{displayMessage?.productName }}
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group row mb-2">
+                    <label for="product_code" class="col-md-2 mr-3">Product Code :</label>
+                    <div class="col-md-8">
+                        <input type="text" id="product_code" class="form-control" [ngClass]=" displayMessage?.productCode ? 'is-invalid' : ''" placeholder="Product Code"
+                            formControlName="productCode" (ngBlur)="onfocus()" (ngFocus)="onfocus()" />
+                        <span class="invalid-feedback">
+                            {{displayMessage?.productCode}}
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group row mb-2">
+                    <label for="product_rating" class="col-md-2 mr-3">Product Rating :</label>
+                    <div class="col-md-8">
+                        <input type="text" id="product_rating" class="form-control" [ngClass]="{'is-invalid': editProductForm.get('starRating').dirty && editProductForm.get('starRating').errors}"
+                            placeholder="Product Rating" formControlName="starRating" />
+                        <span class="invalid-feedback" *ngIf="editProductForm.get('starRating').errors?.range">
+                            range: 'Rate the product between 1 (lowest) and 5 (highest).'
+                            <!-- {{displayMessage?.starRating}} -->
+                        </span>
+                    </div>
+                </div>
+                <div formArrayName="tags">
+                    <div class="form-group row mb-2" *ngFor="let tag of tags.controls; let i=index;">
+                        <label [attr.for]="i" class="col-md-2 mr-3">Tag :</label>
+
+                        <div class="col-md-8">
+                            <input type="text" [id]="i" class="form-control" [ngClass]=" displayMessage?.i ? 'is-invalid' : ''" placeholder="{{'Tag '+ i}}"
+                                [formControlName]="i" />
+                            <span class="invalid-feedback">
+                                {{displayMessage?.i}}
+                            </span>
+                        </div>
+                        <div class="col-md-1">
+                            <button class="btn btn-outline-info mr-3" type="button" (click)="deleteTag(i)">DELETE TAG</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <button class="btn btn-outline-info mr-5" type="button" (click)="addTag()">ADD TAG</button>
+                </div>
+                <div class="form-group row mb-2">
+                    <label for="product_description" class="col-md-2 mr-3">Description :</label>
+                    <div class="col-md-8">
+                        <input type="text" id="product_description" class="form-control" placeholder="Description" [ngClass]=" displayMessage?.description ? 'is-invalid' : ''"
+                            formControlName="description" />
+                        <span class="invalid-feedback">
+                            {{displayMessage?.description}}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button class="btn btn-outline-primary ml-3" type="submit" (click)="updateProduct()" [disabled]="!editProductForm.valid">SAVE</button>
+                <button class="btn btn-outline-warning ml-3" type="button" title="cancel the edited form" [routerLink]="['/products']">CANCEL</button>
+                <button class="btn btn-outline-danger ml-3" (click)="deleteProdunct()">DELETE</button>
+            </div>
+        </form>
+    </div>
+
+    <br>product:{{displayMessage|json}}

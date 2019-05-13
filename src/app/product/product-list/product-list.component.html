@@ -1,0 +1,66 @@
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            {{pageTitle}}
+        </div>
+        <div class="card-body">
+            <app-component-criteria [showfilterCriteria]="showCriteria" (valueChanges)="onvalueChanges($event)" [hitCount]="filteredProducts?.length">
+
+            </app-component-criteria>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                <button class="btn btn-outline-primary btn-sm" (click)="toggleImage()">
+                                    {{showImage? 'Hide ' : 'Show '}} Image
+                                </button>
+                            </th>
+                            <th>Product
+                                <span (click)="sortProductByName()" [class]="sortByName ?'fa fa-arrow-down' : 'fa fa-arrow-up'"></span>
+                            </th>
+                            <th>Code</th>
+                            <th>Available</th>
+                            <th>Price
+                                <span (click)="sortProductByPrice()" [class]="sortByPrice ?'fa fa-arrow-up' : 'fa fa-arrow-down'"></span>
+                            </th>
+                            <th>5 Star Rating</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let product of filteredProducts; let i = index">
+                            <td>
+                                <img *ngIf="showImage" [src]="product.imageUrl" [style.width.px]="imageWidth">
+                            </td>
+                            <td>
+                                <a [routerLink]="['/products','detail', product.id]">
+                                    {{product.productName}}
+                                </a>
+                            </td>
+                            <td>{{product.productCode}}</td>
+                            <td>{{product.releaseDate}}</td>
+                            <td>{{product.price}}</td>
+                            <td>
+                                <pm-star [rating]="product.starRating" style="color:black">
+                                </pm-star>
+                            </td>
+                            <td>
+                                <button class="btn btn-outline-primary btn-sm" [routerLink]="['/products', product.id, 'edit']">
+                                    Edit
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+        <div class="card-footer text-muted">
+
+        </div>
+    </div>
+</div>
+
+<br>
+<br>products:{{products|json}}
